@@ -2,11 +2,13 @@
 
 import { Link } from '@/libs/i18nNavigation';
 import { useUser, UserButton } from '@clerk/nextjs';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 export const UserMenu = () => {
   const { isSignedIn, user } = useUser();
-  const locale = useLocale();
+  const pathname = usePathname() || '';
+  const locale = pathname.split('/')[1] || 'en';
   // @ts-ignore - 暂时忽略类型错误
   const t = useTranslations('Navigation');
 
