@@ -50,7 +50,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const locale = await params.locale;
+  const locale = params.locale;
   
   // Show a 404 error if the user requests an unknown locale
   if (!locales.includes(locale as any)) {
