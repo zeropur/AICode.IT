@@ -1,10 +1,10 @@
 {
-  "id": "fd746382-d1ee-40c4-a173-db4142ca9fef",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "7",
-  "dialect": "postgresql",
+  "version": "5",
+  "dialect": "pg",
+  "id": "d0380e3f-2c38-4e4d-9a9e-056d8e5b0ccc",
+  "prevId": "c94b21fa-3bd6-437a-8eed-1a08a1d5209e",
   "tables": {
-    "public.counter": {
+    "counter": {
       "name": "counter",
       "schema": "",
       "columns": {
@@ -18,15 +18,8 @@
           "name": "count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "default": 0
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": 0
         },
         "created_at": {
           "name": "created_at",
@@ -96,10 +89,9 @@
   },
   "enums": {},
   "schemas": {},
-  "sequences": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
   }
-}
+} 

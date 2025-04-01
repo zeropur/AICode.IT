@@ -1,12 +1,19 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
+  "version": "5",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1725916508373,
+      "version": "5",
+      "when": 1648728960454,
       "tag": "0000_init-db",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1712063000000,
+      "tag": "0001_tools_table",
       "breakpoints": true
     }
   ]

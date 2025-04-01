@@ -1,0 +1,40 @@
+{
+  "Index": {
+    "title": "AICode.IT - 为开发者准备的最佳人工智能网站和工具",
+    "description": "探索最大的AI工具目录。查找由ChatGPT每日更新的最佳AI网站和工具。",
+    "hero_title": "为开发者准备的最佳人工智能网站和工具",
+    "hero_stats": "个AI工具和 {count_categories} 个分类",
+    "view_all": "查看所有AI",
+    "footer_copyright": "© 2025 AICode.IT. 保留所有权利。",
+    "footer_description": "最佳AI网站和工具目录。每日更新。",
+    "search_placeholder": "按名称或描述搜索AI工具..."
+  },
+  "AIToolGrid": {
+    "featured": "精选",
+    "just_launched": "最新发布"
+  },
+  "SignIn": {
+    "meta_title": "登录 - DokeyAI",
+    "meta_description": "登录您的DokeyAI账户，访问最佳AI工具目录。",
+    "welcome": "欢迎回来",
+    "no_account": "还没有账户？",
+    "sign_up": "免费注册"
+  },
+  "SignUp": {
+    "meta_title": "注册 - DokeyAI",
+    "meta_description": "创建您的DokeyAI账户，访问最佳AI工具目录。",
+    "welcome": "创建您的账户",
+    "have_account": "已有账户？",
+    "sign_in": "登录"
+  },
+  "Navigation": {
+    "discover": "发现",
+    "category": "分类",
+    "pricing": "价格",
+    "products": "产品",
+    "favourite": "收藏",
+    "submit": "提交",
+    "login": "登录",
+    "dashboard": "控制面板"
+  }
+} 

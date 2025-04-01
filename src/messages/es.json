@@ -1,0 +1,40 @@
+{
+  "Index": {
+    "title": "AICode.IT - Las mejores herramientas y sitios web de IA para desarrolladores",
+    "description": "Explora el directorio de herramientas de IA más grande. Encuentra los mejores sitios web y herramientas de IA actualizados diariamente por ChatGPT.",
+    "hero_title": "Las mejores herramientas y sitios web de IA para desarrolladores",
+    "hero_stats": "IAs y {count_categories} categorías",
+    "view_all": "Ver todas las IAs",
+    "footer_copyright": "© 2025 AICode.IT. Todos los derechos reservados.",
+    "footer_description": "El mejor directorio de herramientas y sitios web de IA. Actualizado diariamente.",
+    "search_placeholder": "Buscar herramientas de IA por nombre o descripción..."
+  },
+  "AIToolGrid": {
+    "featured": "Destacados",
+    "just_launched": "Recién lanzados"
+  },
+  "SignIn": {
+    "meta_title": "Iniciar sesión - DokeyAI",
+    "meta_description": "Inicia sesión en tu cuenta de DokeyAI para acceder al mejor directorio de herramientas de IA.",
+    "welcome": "Bienvenido de nuevo",
+    "no_account": "¿No tienes una cuenta?",
+    "sign_up": "Regístrate gratis"
+  },
+  "SignUp": {
+    "meta_title": "Registrarse - DokeyAI",
+    "meta_description": "Crea tu cuenta de DokeyAI para acceder al mejor directorio de herramientas de IA.",
+    "welcome": "Crea tu cuenta",
+    "have_account": "¿Ya tienes una cuenta?",
+    "sign_in": "Iniciar sesión"
+  },
+  "Navigation": {
+    "discover": "Descubrir",
+    "category": "Categoría",
+    "pricing": "Precios",
+    "products": "Productos",
+    "favourite": "Favoritos",
+    "submit": "Enviar",
+    "login": "Iniciar sesión",
+    "dashboard": "Panel de control"
+  }
+} 

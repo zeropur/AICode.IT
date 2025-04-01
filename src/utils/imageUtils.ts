@@ -1,0 +1,2 @@
+// 默认占位图
+export const placeholderImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%23f0f0ff'/%3E%3Crect x='32' y='32' width='64' height='64' rx='12' fill='%236366f1'/%3E%3Crect x='48' y='32' width='8' height='64' fill='%23f0f0ff'/%3E%3C/svg%3E"; 

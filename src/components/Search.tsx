@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export const Search = () => {
   const [query, setQuery] = useState('');
+  // @ts-ignore - 忽略类型错误
+  const t = useTranslations('Index');
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +21,7 @@ export const Search = () => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by AI, e.g. Video Translation AI Tool"
+          placeholder={t('search_placeholder')}
           className="flex-grow h-10 px-4 text-sm rounded-l-lg bg-white border border-gray-200 border-r-0 focus:outline-none focus:border-indigo-300"
           aria-label="Search AI tools"
         />

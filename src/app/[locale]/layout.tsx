@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, locales } from '@/i18n';
+import { ClerkProvider } from '@clerk/nextjs';
+import { ptBR, enUS } from '@clerk/localizations';
 
 import '@/styles/global.css';
 
@@ -10,6 +12,11 @@ export const metadata: Metadata = {
     {
       rel: 'apple-touch-icon',
       url: '/apple-touch-icon.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/svg+xml',
+      url: '/assets/images/aicode-favicon.svg',
     },
     {
       rel: 'icon',
@@ -24,6 +31,16 @@ export const metadata: Metadata = {
       url: '/favicon-16x16.png',
     },
   ],
+};
+
+// 根据当前语言获取 Clerk 本地化配置
+const getClerkLocalization = (locale: string) => {
+  switch (locale) {
+    case 'pt-BR':
+      return ptBR;
+    default:
+      return enUS;
+  }
 };
 
 export default async function RootLayout({
@@ -41,13 +58,16 @@ export default async function RootLayout({
   }
 
   const messages = await getMessages(locale);
+  const localization = getClerkLocalization(locale);
 
   return (
     <html lang={locale} className="h-full">
       <body className="h-full bg-gray-50">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <ClerkProvider localization={localization}>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

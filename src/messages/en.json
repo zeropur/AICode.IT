@@ -1,6 +1,40 @@
 {
   "Index": {
-    "title": "DokeyAI - Discover The Best AI Websites & Tools",
-    "description": "Explore the largest AI tools directory. Find the best AI websites and tools updated daily by ChatGPT."
+    "title": "AICode.IT - The Best AI Websites and Tools for Developers",
+    "description": "Explore the largest AI tools directory. Find the best AI websites and tools updated daily by ChatGPT.",
+    "hero_title": "The Best AI Websites and Tools for Developers",
+    "hero_stats": "AIs and {count_categories} categories",
+    "view_all": "View all AIs",
+    "footer_copyright": "© 2025 AICode.IT. All rights reserved.",
+    "footer_description": "The best AI websites and tools directory. Updated daily.",
+    "search_placeholder": "Search AI tools by name or description..."
+  },
+  "AIToolGrid": {
+    "featured": "Featured",
+    "just_launched": "Just launched"
+  },
+  "SignIn": {
+    "meta_title": "Sign In - DokeyAI",
+    "meta_description": "Sign in to your DokeyAI account to access the best AI tools directory.",
+    "welcome": "Welcome back",
+    "no_account": "Don't have an account?",
+    "sign_up": "Sign up for free"
+  },
+  "SignUp": {
+    "meta_title": "Sign Up - DokeyAI",
+    "meta_description": "Create your DokeyAI account to access the best AI tools directory.",
+    "welcome": "Create your account",
+    "have_account": "Already have an account?",
+    "sign_in": "Sign in"
+  },
+  "Navigation": {
+    "discover": "Discover",
+    "category": "Category",
+    "pricing": "Pricing",
+    "products": "Products",
+    "favourite": "Favourite",
+    "submit": "Submit",
+    "login": "Login",
+    "dashboard": "Dashboard"
   }
 } 

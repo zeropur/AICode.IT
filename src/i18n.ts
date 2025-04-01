@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 // 导出支持的语言列表
-export const locales = ['en'];
+export const locales = ['en', 'zh-CN', 'es'];
 
 // 创建一个类型安全的消息获取函数
 export async function getMessages(locale: string) {
@@ -18,4 +18,11 @@ export const defaultLocale = 'en';
 export function getLocale(locale?: string) {
   if (!locale) return defaultLocale;
   return locales.includes(locale as any) ? locale : defaultLocale;
-} 
+}
+
+// 语言名称映射
+export const localeNames: Record<string, string> = {
+  'en': 'English',
+  'zh-CN': '中文',
+  'es': 'Español'
+}; 
