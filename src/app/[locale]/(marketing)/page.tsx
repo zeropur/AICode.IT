@@ -3,21 +3,124 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { AIToolGrid } from '@/components/AIToolGrid';
 import { Navbar } from '@/components/Navbar';
 import { Search } from '@/components/Search';
-import { featuredTools } from '@/data/mockData';
 import { ApiToolsGrid } from '@/components/ApiToolsGrid';
+import { supabase } from '@/libs/Supabase';
 
-// 定义一个单独的 Hero 组件，避免导入错误
-const Hero = ({ t }: { t: any }) => {
+// 定义一个异步函数来获取工具和类别的总数
+async function getToolsAndCategoriesCount() {
+  try {
+    // 获取工具总数
+    const { count: toolsCount, error: toolsError } = await supabase
+      .from('tools')
+      .select('*', { count: 'exact', head: true });
+
+    // 获取类别总数  
+    const { count: categoriesCount, error: categoriesError } = await supabase
+      .from('categories')
+      .select('*', { count: 'exact', head: true });
+
+    if (toolsError || categoriesError) {
+      console.error('Error fetching counts:', toolsError || categoriesError);
+      return { toolsCount: 0, categoriesCount: 0 };
+    }
+
+    return { 
+      toolsCount: toolsCount || 0, 
+      categoriesCount: categoriesCount || 0 
+    };
+  } catch (error) {
+    console.error('Error fetching counts:', error);
+    return { toolsCount: 0, categoriesCount: 0 };
+  }
+}
+
+// 获取所有类别数据
+async function getAllCategories() {
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('name', { ascending: true });
+      
+    if (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
+// 静态类别列表（备用数据）
+const defaultCategories = [
+  { id: 1, name: 'Text&Writing', slug: 'text-writing' },
+  { id: 2, name: 'Image', slug: 'image' },
+  { id: 3, name: 'Video', slug: 'video' },
+  { id: 4, name: 'Code&IT', slug: 'code-it' },
+  { id: 5, name: 'Voice', slug: 'voice' },
+  { id: 6, name: 'Business', slug: 'business' },
+  { id: 7, name: 'Marketing', slug: 'marketing' },
+  { id: 8, name: 'AI Detector', slug: 'ai-detector' },
+  { id: 9, name: 'Chatbot', slug: 'chatbot' },
+  { id: 10, name: 'Design&Art', slug: 'design-art' },
+  { id: 11, name: 'Life Assistant', slug: 'life-assistant' },
+  { id: 12, name: '3D', slug: '3d' },
+  { id: 13, name: 'Education', slug: 'education' }
+];
+
+// 类别导航样式
+const categoryNavStyles = {
+  scrollbarWidth: 'none',  /* Firefox */
+  msOverflowStyle: 'none',  /* IE and Edge */
+  '&::-webkit-scrollbar': {
+    display: 'none'  /* Chrome, Safari and Opera */
+  }
+};
+
+// 使用server component获取数据的Hero组件
+const Hero = async ({ t }: { t: any }) => {
+  const { toolsCount, categoriesCount } = await getToolsAndCategoriesCount();
+  const categories = await getAllCategories();
+  
+  // 使用数据库中的类别，如果为空则使用默认类别
+  const displayCategories = categories.length > 0 ? categories : defaultCategories;
+  
   return (
-    <div className="bg-indigo-50 py-8 px-4 rounded-xl">
-      <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">
-          {t('hero_title')}
-        </h1>
-        <p className="text-base mb-6 text-gray-700">
-          <span className="text-indigo-600 font-medium">25168</span> {t('hero_stats', { count_ai: 25168, count_categories: 233 })}
-        </p>
-        <Search />
+    <div className="space-y-6">
+      <div className="bg-indigo-50 py-8 px-4 rounded-xl">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4 text-gray-900">
+            {t('hero_title')}
+          </h1>
+          <p className="text-base mb-6 text-gray-700">
+            <span className="text-indigo-600 font-medium">{toolsCount}</span> Tools and <span className="text-indigo-600 font-medium">{categoriesCount}</span> categories
+          </p>
+          <Search />
+        </div>
+      </div>
+      
+      {/* 类别导航 */}
+      <div className="flex overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex space-x-2 mx-auto">
+          {displayCategories.map((category) => (
+            <a 
+              key={category.id} 
+              href={`/category/${category.slug || category.id}`}
+              className="whitespace-nowrap px-4 py-2 rounded-full border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+            >
+              {category.name}
+            </a>
+          ))}
+          <a 
+            href="/categories"
+            className="whitespace-nowrap px-4 py-2 rounded-full border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors flex items-center"
+          >
+            More <span className="ml-1">+</span>
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -49,23 +152,17 @@ export default async function Index(props: IIndexProps) {
   
   // @ts-ignore - 忽略类型错误
   const t = await getTranslations('Index');
-  // @ts-ignore - 忽略类型错误
-  const t_grid = await getTranslations('AIToolGrid');
   
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
+        {/* 使用异步Hero组件 */}
         <Hero t={t} />
 
-        {/* 使用 ApiToolsGrid 组件替换 Just launched 部分 */}
-        <div className="mt-16">
-          <ApiToolsGrid />
-        </div>
-
+        {/* 只保留ApiToolsGrid组件 */}
         <div className="mt-8">
-          {/* @ts-ignore - 忽略类型错误 */}
-          <AIToolGrid tools={featuredTools} title={`${t_grid('featured')}*`} />
+          <ApiToolsGrid />
         </div>
 
         <div className="mt-12 text-center">
