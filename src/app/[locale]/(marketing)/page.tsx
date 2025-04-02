@@ -1,11 +1,11 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { AIToolGrid } from '@/components/AIToolGrid';
 import { Navbar } from '@/components/Navbar';
 import { Search } from '@/components/Search';
-import { ApiToolsGrid } from '@/components/ApiToolsGrid';
 import { CategoryNavigation } from '@/components/CategoryNavigation';
 import { supabase } from '@/libs/Supabase';
+import ClientWrapper from '@/components/ClientWrapper';
+import { getViewAllTranslation } from './actions';
 
 // 定义一个异步函数来获取工具和类别的总数
 async function getToolsAndCategoriesCount() {
@@ -72,39 +72,85 @@ const defaultCategories = [
   { id: 13, name: 'Education', slug: 'education' }
 ];
 
-// 类别导航样式
-const categoryNavStyles = {
-  scrollbarWidth: 'none',  /* Firefox */
-  msOverflowStyle: 'none',  /* IE and Edge */
-  '&::-webkit-scrollbar': {
-    display: 'none'  /* Chrome, Safari and Opera */
-  }
-};
-
 // 使用server component获取数据的Hero组件
-const Hero = async ({ t }: { t: any }) => {
+const Hero = async ({ locale }: { locale: string }) => {
   const { toolsCount, categoriesCount } = await getToolsAndCategoriesCount();
   const categories = await getAllCategories();
   
   // 使用数据库中的类别，如果为空则使用默认类别
   const displayCategories = categories.length > 0 ? categories : defaultCategories;
   
+  // 获取翻译
+  // @ts-ignore - 忽略类型错误
+  const t = await getTranslations({
+    locale,
+    namespace: 'Index',
+  });
+  
+  // 获取"查看全部"按钮的文本
+  const viewAllText = await getViewAllTranslation(locale);
+  
+  // 基于当前语言区域生成正确的文本
+  let statsDisplay;
+  if (locale === 'en') {
+    statsDisplay = (
+      <>
+        <span className="text-indigo-600 font-medium">{toolsCount}</span>
+        {' Tools and '}
+        <span className="text-indigo-600 font-medium">{categoriesCount}</span>
+        {' categories'}
+      </>
+    );
+  } else if (locale === 'es') {
+    statsDisplay = (
+      <>
+        <span className="text-indigo-600 font-medium">{toolsCount}</span>
+        {' Herramientas y '}
+        <span className="text-indigo-600 font-medium">{categoriesCount}</span>
+        {' categorías'}
+      </>
+    );
+  } else if (locale === 'zh-CN') {
+    statsDisplay = (
+      <>
+        <span className="text-indigo-600 font-medium">{toolsCount}</span>
+        {' 个工具和 '}
+        <span className="text-indigo-600 font-medium">{categoriesCount}</span>
+        {' 个分类'}
+      </>
+    );
+  } else {
+    // 默认回退到英文
+    statsDisplay = (
+      <>
+        <span className="text-indigo-600 font-medium">{toolsCount}</span>
+        {' Tools and '}
+        <span className="text-indigo-600 font-medium">{categoriesCount}</span>
+        {' categories'}
+      </>
+    );
+  }
+  
   return (
     <div className="space-y-6">
       <div className="bg-indigo-50 py-8 px-4 rounded-xl">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4 text-gray-900">
+            {/* @ts-ignore - 忽略类型错误 */}
             {t('hero_title')}
           </h1>
           <p className="text-base mb-6 text-gray-700">
-            <span className="text-indigo-600 font-medium">{toolsCount}</span> {t('hero_stats', { count_categories: categoriesCount })}
+            {statsDisplay}
           </p>
           <Search />
         </div>
       </div>
       
-      {/* 使用新的类别导航组件 */}
-      <CategoryNavigation categories={displayCategories} />
+      {/* 客户端包装器，使用字符串值而不是函数 */}
+      <ClientWrapper 
+        categories={displayCategories}
+        viewAllText={viewAllText}
+      />
     </div>
   );
 };
@@ -141,22 +187,7 @@ export default async function Index(props: IIndexProps) {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         {/* 使用异步Hero组件 */}
-        <Hero t={t} />
-
-        {/* 只保留ApiToolsGrid组件 */}
-        <div className="mt-8">
-          <ApiToolsGrid />
-        </div>
-
-        <div className="mt-12 text-center">
-          <a 
-            href="/all-tools" 
-            className="inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            {/* @ts-ignore - 忽略类型错误 */}
-            {t('view_all')}
-          </a>
-        </div>
+        <Hero locale={locale} />
       </div>
       
       <footer className="bg-white border-t border-gray-100 py-8 mt-16">

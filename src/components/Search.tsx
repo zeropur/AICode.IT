@@ -2,16 +2,37 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { searchService } from '@/services/searchService';
 
-export const Search = () => {
+type SearchProps = {
+  onSearch?: (query: string) => void;
+};
+
+export const Search = ({ onSearch }: SearchProps) => {
   const [query, setQuery] = useState('');
   // @ts-ignore - 忽略类型错误
   const t = useTranslations('Index');
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement search functionality here
-    console.log('Searching for:', query);
+    // 调用搜索服务进行全局广播
+    searchService.search(query);
+    
+    // 如果有 onSearch 回调，同时调用它
+    if (onSearch) {
+      onSearch(query);
+    }
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchService.search(query);
+      
+      if (onSearch) {
+        onSearch(query);
+      }
+    }
   };
   
   return (
@@ -21,6 +42,8 @@ export const Search = () => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          // @ts-ignore - 忽略类型错误
           placeholder={t('search_placeholder')}
           className="flex-grow h-10 px-4 text-sm rounded-l-lg bg-white border border-gray-200 border-r-0 focus:outline-none focus:border-indigo-300"
           aria-label="Search AI tools"

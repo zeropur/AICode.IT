@@ -3,8 +3,8 @@
     "title": "AICode.IT - 为开发者准备的最佳人工智能网站和工具",
     "description": "探索最大的AI工具目录。查找由ChatGPT每日更新的最佳AI网站和工具。",
     "hero_title": "为开发者准备的最佳人工智能网站和工具",
-    "hero_stats": "个AI工具和 {count_categories} 个分类",
-    "view_all": "查看所有AI",
+    "hero_stats": "个工具和 {count_categories} 个分类",
+    "view_all": "查看所有工具",
     "footer_copyright": "© 2025 AICode.IT. 保留所有权利。",
     "footer_description": "最佳AI网站和工具目录。每日更新。",
     "search_placeholder": "按名称或描述搜索AI工具..."

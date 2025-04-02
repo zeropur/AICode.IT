@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '10');
     const category = searchParams.get('category');
+    const search = searchParams.get('search');
+    const sort = searchParams.get('sort');
     
     // 验证分页参数
     const validPage = page > 0 ? page : 1;
@@ -19,12 +21,24 @@ export async function GET(request: NextRequest) {
     // 构建查询
     let query = supabase
       .from('tools')
-      .select('*, categories(name)', { count: 'exact' })
-      .order('created_at', { ascending: false });
+      .select('*, categories(name)', { count: 'exact' });
+    
+    // 如果有搜索参数，按名称和描述搜索
+    if (search) {
+      const searchTerm = `%${search}%`;
+      query = query.or(`name.ilike.${searchTerm},description.ilike.${searchTerm}`);
+    }
       
     // 如果有类别参数，按类别筛选
     if (category) {
       query = query.eq('category_id', category);
+    }
+    
+    // 处理排序
+    if (sort === 'latest') {
+      query = query.order('release_date', { ascending: false });
+    } else {
+      query = query.order('created_at', { ascending: false });
     }
     
     // 应用分页

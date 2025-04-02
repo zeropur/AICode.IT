@@ -3,8 +3,8 @@
     "title": "AICode.IT - Las mejores herramientas y sitios web de IA para desarrolladores",
     "description": "Explora el directorio de herramientas de IA más grande. Encuentra los mejores sitios web y herramientas de IA actualizados diariamente por ChatGPT.",
     "hero_title": "Las mejores herramientas y sitios web de IA para desarrolladores",
-    "hero_stats": "IAs y {count_categories} categorías",
-    "view_all": "Ver todas las IAs",
+    "hero_stats": "Herramientas y {count_categories} categorías",
+    "view_all": "Ver todas las herramientas",
     "footer_copyright": "© 2025 AICode.IT. Todos los derechos reservados.",
     "footer_description": "El mejor directorio de herramientas y sitios web de IA. Actualizado diariamente.",
     "search_placeholder": "Buscar herramientas de IA por nombre o descripción..."
