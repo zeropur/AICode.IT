@@ -64,9 +64,9 @@ export const AIToolCard = ({
           <Image
             src={imgSrc}
             alt={title}
-            width={80}
-            height={80}
-            className="object-contain"
+            width={128}
+            height={128}
+            className="w-full h-full object-cover"
             onError={handleImageError}
             unoptimized={imgError} // 当使用默认图片时禁用图像优化
           />
@@ -103,7 +103,7 @@ export const AIToolCard = ({
         </div>
       </div>
       
-      <p className="text-xs text-gray-600 mb-3 line-clamp-2">{description}</p>
+      <p className="text-xs text-gray-600 mb-3 line-clamp-2 relative z-10 pointer-events-none">{description}</p>
       
       <div className="flex items-center justify-between">
         <span className="bg-indigo-50 text-indigo-600 text-xs px-2 py-0.5 rounded-full relative z-20">

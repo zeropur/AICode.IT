@@ -40,6 +40,10 @@ export const Navbar = () => {
               {/* @ts-ignore */}
               {t('pricing')}
             </Link>
+            <Link href="/admin/tools" className="text-sm text-gray-800 hover:text-indigo-600 mr-6">
+              {/* @ts-ignore */}
+              工具管理
+            </Link>
             <div className="relative group">
               <button className="flex items-center text-sm text-gray-800 hover:text-indigo-600">
                 {/* @ts-ignore */}
@@ -99,6 +103,9 @@ export const Navbar = () => {
             <Link href="/pricing" className="text-sm text-gray-800 hover:text-indigo-600 py-1.5">
               {/* @ts-ignore */}
               {t('pricing')}
+            </Link>
+            <Link href="/admin/tools" className="text-sm text-gray-800 hover:text-indigo-600 py-1.5">
+              工具管理
             </Link>
             <Link href="/products" className="text-sm text-gray-800 hover:text-indigo-600 py-1.5">
               {/* @ts-ignore */}

@@ -9,7 +9,8 @@ import { useTranslations } from 'next-intl';
 // 创建Supabase客户端
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// 只有在URL不为空时才创建Supabase客户端
+const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 // API工具数据和AIToolGrid组件需要的数据格式有所不同，需要转换
 interface ApiTool {
@@ -20,6 +21,8 @@ interface ApiTool {
   description: string;
   release_date: string;
   image_url: string;
+  category_id?: number;
+  category_name?: string;
 }
 
 interface AITool {
@@ -51,7 +54,7 @@ const convertApiToolToAITool = (apiTool: ApiTool): AITool => {
     description: apiTool.description,
     imageUrl: isValidUrl(apiTool.image_url) ? apiTool.image_url : placeholderImage,
     link: apiTool.link,
-    category: 'AI Tool', // 可以根据需要添加分类
+    category: apiTool.category_name || 'AI Tool', // 使用类别名称
     rating: apiTool.rating,
     isNew: true // 可以根据release_date判断是否为新工具
   };
@@ -125,46 +128,52 @@ const skeletonTools: AITool[] = Array(5).fill(0).map((_, index) => ({
 
 export const ApiToolsGrid = () => {
   const [tools, setTools] = useState<AITool[]>(skeletonTools);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    pageSize: 10,
+    pageCount: 0
+  });
   // @ts-ignore - 忽略类型错误
   const t = useTranslations('AIToolGrid');
 
   useEffect(() => {
     const fetchTools = async () => {
       try {
-        // 从Supabase获取工具数据
-        const { data, error } = await supabase
-          .from('tools')
-          .select('*')
-          .order('id');
-        
-        if (error) {
-          throw error;
+        setLoading(true);
+        // 只有在supabase客户端存在时才尝试获取数据
+        if (supabase) {
+          // 从API获取工具数据（使用新的分页接口）
+          const response = await fetch(`/api/tools?page=1&pageSize=10`);
+          const result = await response.json();
+          
+          if (response.ok && result.data) {
+            // 将API工具数据转换为AITool格式
+            const convertedTools = result.data.map(convertApiToolToAITool);
+            setTools(convertedTools);
+            setPagination(result.pagination);
+            setLoading(false);
+            return;
+          }
         }
         
-        if (data && data.length > 0) {
-          // 将Supabase工具数据转换为AITool格式
-          const convertedTools = data.map(convertApiToolToAITool);
-          setTools(convertedTools);
-        } else {
-          // 如果没有数据，使用示例数据
-          setTools(sampleAITools);
-        }
+        // 如果没有Supabase客户端或者没有数据，使用示例数据
+        setTools(sampleAITools);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching tools:', error);
-        // 在Supabase请求失败时使用示例数据
+        // 在API请求失败时使用示例数据
         setTools(sampleAITools);
+        setLoading(false);
       }
     };
 
-    // 延迟获取数据，让占位卡片有时间显示
-    const timer = setTimeout(() => {
-      fetchTools();
-    }, 500);
-
-    return () => clearTimeout(timer);
+    // 获取数据
+    fetchTools();
   }, []);
 
   // 直接使用 AIToolGrid 组件显示工具数据（即使在加载中也显示占位卡片）
   // @ts-ignore - 忽略类型错误
-  return <AIToolGrid tools={tools} title={t('just_launched')} />;
+  return <AIToolGrid tools={tools} title={t('just_launched')} loading={loading} />;
 }; 

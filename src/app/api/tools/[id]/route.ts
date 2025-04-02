@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { data, error } = await supabase
       .from('tools')
-      .select('*')
+      .select('*, categories(name)')
       .eq('id', params.id)
       .single();
 
@@ -26,8 +26,15 @@ export async function GET(
         { status: 404 }
       );
     }
+    
+    // 处理返回数据，转换类别信息
+    const processedData = {
+      ...data,
+      category_name: data.categories?.name || null,
+      categories: undefined // 移除嵌套的categories对象
+    };
 
-    return NextResponse.json(data);
+    return NextResponse.json(processedData);
   } catch (error) {
     console.error('Error fetching tool:', error);
     return NextResponse.json(
@@ -49,21 +56,38 @@ export async function PUT(
     // }
 
     const body = await request.json();
+    
+    // 确保category_id是数字
+    if (body.category_id) {
+      body.category_id = Number(body.category_id);
+    }
+    
+    // 添加updated_at字段
+    body.updated_at = new Date().toISOString();
+    
     const { data, error } = await adminSupabase
       .from('tools')
       .update(body)
       .eq('id', params.id)
-      .select()
+      .select('*, categories(name)')
       .single();
 
     if (error) {
+      console.error('Error updating tool:', error);
       return NextResponse.json(
-        { error: 'Failed to update tool' },
+        { error: `Failed to update tool: ${error.message}` },
         { status: 500 }
       );
     }
+    
+    // 处理返回数据，转换类别信息
+    const processedData = {
+      ...data,
+      category_name: data.categories?.name || null,
+      categories: undefined // 移除嵌套的categories对象
+    };
 
-    return NextResponse.json(data);
+    return NextResponse.json(processedData);
   } catch (error) {
     console.error('Error updating tool:', error);
     return NextResponse.json(
@@ -90,8 +114,9 @@ export async function DELETE(
       .eq('id', params.id);
 
     if (error) {
+      console.error('Error deleting tool:', error);
       return NextResponse.json(
-        { error: 'Failed to delete tool' },
+        { error: `Failed to delete tool: ${error.message}` },
         { status: 500 }
       );
     }

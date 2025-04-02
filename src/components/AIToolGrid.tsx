@@ -18,9 +18,10 @@ type AITool = {
 type AIToolGridProps = {
   tools: AITool[];
   title: string;
+  loading?: boolean;
 };
 
-export const AIToolGrid = ({ tools, title }: AIToolGridProps) => {
+export const AIToolGrid = ({ tools, title, loading = false }: AIToolGridProps) => {
   // @ts-ignore - 忽略类型错误
   const t = useTranslations('AIToolGrid');
   // @ts-ignore - 忽略类型错误

@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, locales } from '@/i18n';
-import { ClerkProvider } from '@clerk/nextjs';
-import { ptBR, enUS } from '@clerk/localizations';
+// 暂时注释掉Clerk相关导入
+// import { ClerkProvider } from '@clerk/nextjs';
+// import { ptBR, enUS } from '@clerk/localizations';
 
 import '@/styles/global.css';
 
@@ -33,15 +34,16 @@ export const metadata: Metadata = {
   ],
 };
 
+// 暂时注释掉Clerk本地化配置
 // 根据当前语言获取 Clerk 本地化配置
-const getClerkLocalization = (locale: string) => {
-  switch (locale) {
-    case 'pt-BR':
-      return ptBR;
-    default:
-      return enUS;
-  }
-};
+// const getClerkLocalization = (locale: string) => {
+//   switch (locale) {
+//     case 'pt-BR':
+//       return ptBR;
+//     default:
+//       return enUS;
+//   }
+// };
 
 export default async function RootLayout({
   children,
@@ -58,16 +60,16 @@ export default async function RootLayout({
   }
 
   const messages = await getMessages(locale);
-  const localization = getClerkLocalization(locale);
+  // 暂时注释掉Clerk本地化
+  // const localization = getClerkLocalization(locale);
 
   return (
     <html lang={locale} className="h-full">
       <body className="h-full bg-gray-50">
-        <ClerkProvider localization={localization}>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </ClerkProvider>
+        {/* 移除ClerkProvider，直接使用NextIntlClientProvider */}
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
