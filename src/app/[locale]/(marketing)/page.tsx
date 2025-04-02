@@ -4,6 +4,7 @@ import { AIToolGrid } from '@/components/AIToolGrid';
 import { Navbar } from '@/components/Navbar';
 import { Search } from '@/components/Search';
 import { ApiToolsGrid } from '@/components/ApiToolsGrid';
+import { CategoryNavigation } from '@/components/CategoryNavigation';
 import { supabase } from '@/libs/Supabase';
 
 // 定义一个异步函数来获取工具和类别的总数
@@ -96,32 +97,14 @@ const Hero = async ({ t }: { t: any }) => {
             {t('hero_title')}
           </h1>
           <p className="text-base mb-6 text-gray-700">
-            <span className="text-indigo-600 font-medium">{toolsCount}</span> Tools and <span className="text-indigo-600 font-medium">{categoriesCount}</span> categories
+            <span className="text-indigo-600 font-medium">{toolsCount}</span> {t('hero_stats', { count_categories: categoriesCount })}
           </p>
           <Search />
         </div>
       </div>
       
-      {/* 类别导航 */}
-      <div className="flex overflow-x-auto pb-2 no-scrollbar">
-        <div className="flex space-x-2 mx-auto">
-          {displayCategories.map((category) => (
-            <a 
-              key={category.id} 
-              href={`/category/${category.slug || category.id}`}
-              className="whitespace-nowrap px-4 py-2 rounded-full border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
-            >
-              {category.name}
-            </a>
-          ))}
-          <a 
-            href="/categories"
-            className="whitespace-nowrap px-4 py-2 rounded-full border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors flex items-center"
-          >
-            More <span className="ml-1">+</span>
-          </a>
-        </div>
-      </div>
+      {/* 使用新的类别导航组件 */}
+      <CategoryNavigation categories={displayCategories} />
     </div>
   );
 };
