@@ -50,7 +50,7 @@ export const Search = ({ onSearch }: SearchProps) => {
         />
         <button 
           type="submit"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 w-10 flex items-center justify-center rounded-r-lg focus:outline-none"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 w-10 flex items-center justify-center rounded-r-lg focus:outline-none cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
             <circle cx="11" cy="11" r="8"></circle>

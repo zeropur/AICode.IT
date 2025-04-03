@@ -18,7 +18,7 @@ export const UserMenu = () => {
       <div className="flex items-center">
         <Link 
           href="/dashboard"
-          className="mr-3 text-sm hover:text-indigo-600 transition-colors"
+          className="mr-3 text-sm hover:text-indigo-600 transition-colors cursor-pointer"
         >
           <span>{t('dashboard')}</span>
         </Link>
@@ -26,7 +26,7 @@ export const UserMenu = () => {
           {"User"}
         </span>
         {/* <UserButton afterSignOutUrl="/" /> */}
-        <button className="px-3 py-1.5 text-sm bg-gray-200 rounded-full">
+        <button className="px-3 py-1.5 text-sm bg-gray-200 rounded-full cursor-pointer">
           U
         </button>
       </div>
@@ -35,7 +35,7 @@ export const UserMenu = () => {
 
   return (
     <div className="flex items-center">
-      <Link href="/sign-in" className="px-3 py-1.5 text-sm text-gray-700 hover:text-indigo-600">
+      <Link href="/sign-in" className="px-3 py-1.5 text-sm text-gray-700 hover:text-indigo-600 cursor-pointer">
         {t('login')}
       </Link>
     </div>

@@ -14,7 +14,7 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center">
           {/* Logo and brand */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center cursor-pointer">
             <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
@@ -37,7 +37,7 @@ export const Navbar = () => {
         {/* Mobile menu button */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden text-gray-700"
+          className="md:hidden text-gray-700 cursor-pointer"
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -58,7 +58,7 @@ export const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 py-3">
           <div className="container mx-auto px-4 flex flex-col space-y-3">
-            <Link href="/submit" className="text-sm text-gray-800 hover:text-indigo-600 py-1.5">
+            <Link href="/submit" className="text-sm text-gray-800 hover:text-indigo-600 py-1.5 cursor-pointer">
               {/* @ts-ignore */}
               {t('submit')}
             </Link>

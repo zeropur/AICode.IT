@@ -57,41 +57,45 @@ export const AIToolCard = ({
   }, [imageUrl]);
 
   return (
-    <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col" style={{ height: '290px' }}>
-      <Link href={link} className="absolute inset-0 z-0" aria-hidden="true" target="_blank" rel="noopener noreferrer" />
-      
-      <div className="relative w-full mb-3 overflow-hidden rounded-lg bg-indigo-50" style={{ height: '185px' }}>
-        <div className="w-full h-full flex items-center justify-center">
-          {imgSrc === placeholderImage || imgError ? (
-            // 默认占位图使用固定大小并居中显示
-            <Image
-              src={placeholderImage}
-              alt={title}
-              width={80}
-              height={80}
-              className="object-contain"
-              unoptimized={true}
-            />
-          ) : (
-            // 实际图片填充显示
-            <Image
-              src={imgSrc}
-              alt={title}
-              fill={true}
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover"
-              onError={handleImageError}
-            />
-          )}
-        </div>
+    <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col" style={{ height: '260px' }}>
+      <div className="relative w-full mb-3 overflow-hidden rounded-lg bg-indigo-50 cursor-pointer" style={{ height: '154px' }}>
+        <Link 
+          href={link} 
+          className="block w-full h-full" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            {imgSrc === placeholderImage || imgError ? (
+              // 默认占位图使用固定大小并居中显示
+              <Image
+                src={placeholderImage}
+                alt={title}
+                width={80}
+                height={80}
+                className="object-contain"
+                unoptimized={true}
+              />
+            ) : (
+              // 实际图片填充显示
+              <Image
+                src={imgSrc}
+                alt={title}
+                fill={true}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+                onError={handleImageError}
+              />
+            )}
+          </div>
+        </Link>
       </div>
       
-      <div className="flex items-center justify-between h-7 mb-2">
-        <div className="relative z-20 max-w-[80%]">
+      <div className="flex items-center justify-between mb-2 h-7">
+        <div className="max-w-[80%]">
           <Link 
             href={link} 
-            className="text-base font-semibold truncate block hover:text-indigo-600 transition-colors" 
-            onClick={(e) => e.stopPropagation()}
+            className="text-base font-semibold truncate block hover:text-indigo-600 transition-colors cursor-pointer" 
             target="_blank"
             rel="noopener noreferrer"
             title={title}
@@ -100,11 +104,10 @@ export const AIToolCard = ({
           </Link>
         </div>
         
-        <div className="relative z-20">
+        <div>
           <Link 
             href={link} 
-            className="text-gray-500 block hover:text-indigo-600 transition-colors" 
-            onClick={(e) => e.stopPropagation()}
+            className="text-gray-500 block hover:text-indigo-600 transition-colors cursor-pointer" 
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -117,11 +120,12 @@ export const AIToolCard = ({
         </div>
       </div>
       
-      <div className="pointer-events-none relative z-10 h-14 overflow-hidden">
-        <p className="text-xs text-gray-600 line-clamp-2">{description}</p>
+      {/* 描述区域 - 使用原生title属性实现提示 */}
+      <div className="h-10 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <p className="text-xs text-gray-600 line-clamp-2 cursor-default" title={description}>{description}</p>
       </div>
       
-      <div className="relative z-20 pt-2 mt-auto border-t border-gray-50">
+      <div className="pt-1 mt-auto border-t border-gray-50">
         <div className="flex items-center justify-between">
           <span className="bg-indigo-50 text-indigo-600 text-xs px-2 py-0.5 rounded-full">
             {category}
