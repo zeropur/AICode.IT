@@ -36,5 +36,13 @@
     "submit": "Enviar",
     "login": "Iniciar sesión",
     "dashboard": "Panel de control"
+  },
+  "Dashboard": {
+    "meta_title": "Panel de control - AICode.IT"
+  },
+  "DashboardLayout": {
+    "dashboard_link": "Panel de control",
+    "user_profile_link": "Perfil",
+    "sign_out": "Cerrar sesión"
   }
 } 

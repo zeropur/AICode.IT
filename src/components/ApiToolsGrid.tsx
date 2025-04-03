@@ -57,7 +57,7 @@ const convertApiToolToAITool = (apiTool: ApiTool): AITool => {
     link: apiTool.link,
     category: apiTool.category_name || 'AI Tool', // 使用类别名称
     rating: apiTool.rating,
-    isNew: true // 可以根据release_date判断是否为新工具
+    isNew: false // 将isNew设置为false，不再显示New标签
   };
 };
 
@@ -71,7 +71,7 @@ const sampleAITools: AITool[] = [
     link: '/tools/ai-image-generator',
     category: 'Image Generation',
     rating: 4.5,
-    isNew: true
+    isNew: false
   },
   {
     id: '2',
@@ -81,7 +81,7 @@ const sampleAITools: AITool[] = [
     link: '/tools/ai-text-analyzer',
     category: 'Text Analysis',
     rating: 4.2,
-    isNew: true
+    isNew: false
   },
   {
     id: '3',
@@ -91,7 +91,7 @@ const sampleAITools: AITool[] = [
     link: '/tools/ai-code-assistant',
     category: 'Development',
     rating: 4.8,
-    isNew: true
+    isNew: false
   },
   {
     id: '4',
@@ -101,7 +101,7 @@ const sampleAITools: AITool[] = [
     link: '/tools/ai-music-composer',
     category: 'Music',
     rating: 4.3,
-    isNew: true
+    isNew: false
   },
   {
     id: '5',
@@ -111,7 +111,7 @@ const sampleAITools: AITool[] = [
     link: '/tools/ai-writing-assistant',
     category: 'Writing',
     rating: 4.6,
-    isNew: true
+    isNew: false
   }
 ];
 

@@ -106,6 +106,14 @@ export default function ToolsAdmin() {
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   
+  // 表单验证错误状态
+  const [validationErrors, setValidationErrors] = useState<{
+    name?: string;
+    link?: string;
+    description?: string;
+    category_id?: string;
+  }>({});
+  
   // 加载工具数据
   const loadTools = async (query = '', page = 1) => {
     setLoading(true);
@@ -178,6 +186,14 @@ export default function ToolsAdmin() {
       ...formData,
       [name]: value
     });
+    
+    // 当用户更改输入时，清除该字段的验证错误
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors({
+        ...validationErrors,
+        [name]: undefined
+      });
+    }
   };
   
   // 处理图片预览
@@ -261,6 +277,7 @@ export default function ToolsAdmin() {
     });
     setPreviewUrl('');
     setImageFile(null);
+    setValidationErrors({}); // 重置验证错误
     setShowModal(true);
   };
   
@@ -294,6 +311,46 @@ export default function ToolsAdmin() {
   // 保存工具信息
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // 验证表单
+    const errors: {
+      name?: string;
+      link?: string;
+      description?: string;
+      category_id?: string;
+    } = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = "工具名称不能为空";
+    }
+    
+    if (!formData.link.trim()) {
+      errors.link = "链接不能为空";
+    } else if (!/^https?:\/\//.test(formData.link)) {
+      errors.link = "链接必须以 http:// 或 https:// 开头";
+    }
+    
+    if (!formData.description.trim()) {
+      errors.description = "描述不能为空";
+    }
+    
+    if (!formData.category_id || formData.category_id === 0) {
+      errors.category_id = "请选择类别";
+    }
+    
+    // 如果有错误，显示并中断提交
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      // 滚动到第一个错误字段
+      const firstErrorField = document.querySelector('[data-error="true"]');
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    
+    // 清除任何先前的验证错误
+    setValidationErrors({});
     
     // 首先上传图片（如果有新图片）
     let imageUrl = formData.image_url;
@@ -871,11 +928,14 @@ export default function ToolsAdmin() {
                     <input
                       type="text"
                       name="name"
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2"
+                      data-error={!!validationErrors.name}
+                      className={`w-full border ${validationErrors.name ? 'border-red-500' : 'border-gray-300'} rounded-md px-3 py-2`}
                       value={formData.name}
                       onChange={handleInputChange}
                     />
+                    {validationErrors.name && (
+                      <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -883,18 +943,20 @@ export default function ToolsAdmin() {
                     <input
                       type="url"
                       name="link"
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2"
+                      data-error={!!validationErrors.link}
+                      className={`w-full border ${validationErrors.link ? 'border-red-500' : 'border-gray-300'} rounded-md px-3 py-2`}
                       value={formData.link}
                       onChange={handleInputChange}
                     />
+                    {validationErrors.link && (
+                      <p className="mt-1 text-sm text-red-600">{validationErrors.link}</p>
+                    )}
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">评分 (1-5) *</label>
                     <select
                       name="rating"
-                      required
                       className="w-full border border-gray-300 rounded-md px-3 py-2"
                       value={formData.rating}
                       onChange={handleInputChange}
@@ -911,8 +973,8 @@ export default function ToolsAdmin() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">类别 *</label>
                     <select
                       name="category_id"
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2"
+                      data-error={!!validationErrors.category_id}
+                      className={`w-full border ${validationErrors.category_id ? 'border-red-500' : 'border-gray-300'} rounded-md px-3 py-2`}
                       value={formData.category_id}
                       onChange={handleInputChange}
                     >
@@ -923,6 +985,9 @@ export default function ToolsAdmin() {
                         </option>
                       ))}
                     </select>
+                    {validationErrors.category_id && (
+                      <p className="mt-1 text-sm text-red-600">{validationErrors.category_id}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -936,12 +1001,15 @@ export default function ToolsAdmin() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">描述 *</label>
                     <textarea
                       name="description"
-                      required
+                      data-error={!!validationErrors.description}
                       rows={3}
-                      className="w-full border border-gray-300 rounded-md px-3 py-2"
+                      className={`w-full border ${validationErrors.description ? 'border-red-500' : 'border-gray-300'} rounded-md px-3 py-2`}
                       value={formData.description}
                       onChange={handleInputChange}
                     ></textarea>
+                    {validationErrors.description && (
+                      <p className="mt-1 text-sm text-red-600">{validationErrors.description}</p>
+                    )}
                   </div>
                   
                   <div className="md:col-span-2">

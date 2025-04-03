@@ -36,5 +36,13 @@
     "submit": "Submit",
     "login": "Login",
     "dashboard": "Dashboard"
+  },
+  "Dashboard": {
+    "meta_title": "Dashboard - AICode.IT"
+  },
+  "DashboardLayout": {
+    "dashboard_link": "Dashboard",
+    "user_profile_link": "Profile",
+    "sign_out": "Sign Out"
   }
 } 

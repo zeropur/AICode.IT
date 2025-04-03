@@ -36,5 +36,13 @@
     "submit": "提交",
     "login": "登录",
     "dashboard": "控制面板"
+  },
+  "Dashboard": {
+    "meta_title": "控制面板 - AICode.IT"
+  },
+  "DashboardLayout": {
+    "dashboard_link": "控制面板",
+    "user_profile_link": "个人资料",
+    "sign_out": "退出登录"
   }
 } 

@@ -57,10 +57,10 @@ export const AIToolCard = ({
   }, [imageUrl]);
 
   return (
-    <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col" style={{ height: '240px' }}>
+    <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col" style={{ height: '290px' }}>
       <Link href={link} className="absolute inset-0 z-0" aria-hidden="true" target="_blank" rel="noopener noreferrer" />
       
-      <div className="relative h-32 w-full mb-3 overflow-hidden rounded-lg bg-indigo-50">
+      <div className="relative w-full mb-3 overflow-hidden rounded-lg bg-indigo-50" style={{ height: '185px' }}>
         <div className="w-full h-full flex items-center justify-center">
           {imgSrc === placeholderImage || imgError ? (
             // 默认占位图使用固定大小并居中显示
@@ -86,7 +86,7 @@ export const AIToolCard = ({
         </div>
       </div>
       
-      <div className="flex items-center justify-between mb-2 relative">
+      <div className="flex items-center justify-between h-7 mb-2">
         <div className="relative z-20 max-w-[80%]">
           <Link 
             href={link} 
@@ -94,6 +94,7 @@ export const AIToolCard = ({
             onClick={(e) => e.stopPropagation()}
             target="_blank"
             rel="noopener noreferrer"
+            title={title}
           >
             {title}
           </Link>
@@ -116,7 +117,7 @@ export const AIToolCard = ({
         </div>
       </div>
       
-      <div className="pointer-events-none relative z-10 flex-grow">
+      <div className="pointer-events-none relative z-10 h-14 overflow-hidden">
         <p className="text-xs text-gray-600 line-clamp-2">{description}</p>
       </div>
       
@@ -129,11 +130,6 @@ export const AIToolCard = ({
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>
             <span className="text-xs text-gray-500">{rating}</span>
-            {isNew && (
-              <span className="ml-2 bg-green-50 text-green-600 text-xs px-2 py-0.5 rounded-full">
-                New
-              </span>
-            )}
           </div>
         </div>
       </div>
