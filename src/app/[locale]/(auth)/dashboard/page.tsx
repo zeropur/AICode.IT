@@ -16,9 +16,9 @@ export async function generateMetadata(props: {
 }
 
 export default async function Dashboard(props: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = props.params;
+  const { locale } = await props.params;
   setRequestLocale(locale);
   
   return (

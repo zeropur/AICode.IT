@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { AIToolGrid } from './AIToolGrid';
 import { AIToolCard } from './AIToolCard';
 import { createClient } from '@supabase/supabase-js';
 import { placeholderImage } from '@/utils/imageUtils';
-import { useTranslations } from 'next-intl';
 
 // 创建Supabase客户端
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -13,7 +11,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 // 只有在URL不为空时才创建Supabase客户端
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
-// API工具数据和AIToolGrid组件需要的数据格式有所不同，需要转换
+// API工具数据需要转换为应用所需的格式
 interface ApiTool {
   id: number;
   name: string;
@@ -131,8 +129,6 @@ type ApiToolsGridProps = {
   categoryId?: number | null;
   customTitle?: string;
   showNewOnly?: boolean;
-  onToolCountUpdate?: (count: number) => void;
-  loadAll?: boolean;
   searchQuery?: string;
   categories?: Array<{id: number, name: string}>;
 };
@@ -141,8 +137,6 @@ export const ApiToolsGrid = ({
   categoryId, 
   customTitle, 
   showNewOnly = false,
-  onToolCountUpdate,
-  loadAll = false,
   searchQuery = '',
   categories = []
 }: ApiToolsGridProps) => {
@@ -160,9 +154,6 @@ export const ApiToolsGrid = ({
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastToolElementRef = useRef<HTMLDivElement | null>(null);
-  
-  // @ts-ignore - 暂时忽略类型错误
-  const t = useTranslations('AIToolGrid');
 
   // 获取工具数据的函数
   const fetchTools = useCallback(async (page = 1, append = false) => {
@@ -214,11 +205,6 @@ export const ApiToolsGrid = ({
             hasMore: result.pagination.page < result.pagination.pageCount
           });
           
-          // 回调更新工具总数
-          if (onToolCountUpdate && !append) {
-            onToolCountUpdate(result.pagination.total);
-          }
-          
           setLoading(false);
           setIsFetchingMore(false);
           return;
@@ -248,9 +234,6 @@ export const ApiToolsGrid = ({
         }
         
         setTools(filteredTools);
-        if (onToolCountUpdate) {
-          onToolCountUpdate(filteredTools.length);
-        }
       }
       setLoading(false);
       setIsFetchingMore(false);
@@ -279,21 +262,11 @@ export const ApiToolsGrid = ({
         }
         
         setTools(filteredTools);
-        if (onToolCountUpdate) {
-          onToolCountUpdate(filteredTools.length);
-        }
       }
       setLoading(false);
       setIsFetchingMore(false);
     }
-  }, [categoryId, showNewOnly, searchQuery, onToolCountUpdate, categories]);
-
-  // 监听 loadAll 变化，加载所有数据
-  useEffect(() => {
-    if (loadAll && pagination.hasMore) {
-      fetchTools(pagination.page + 1, true);
-    }
-  }, [loadAll, pagination.hasMore, pagination.page, fetchTools]);
+  }, [categoryId, showNewOnly, searchQuery, categories]);
 
   // 初始加载数据
   useEffect(() => {
@@ -315,7 +288,7 @@ export const ApiToolsGrid = ({
     // 创建观察器
     const setupObserver = () => {
       // 如果已经没有更多数据，不需要设置观察器
-      if (!pagination.hasMore || loading || isFetchingMore || loadAll) return;
+      if (!pagination.hasMore || loading || isFetchingMore) return;
       
       // 注销旧的观察器
       if (observer.current) {
@@ -344,17 +317,13 @@ export const ApiToolsGrid = ({
         observer.current.disconnect();
       }
     };
-  }, [pagination.hasMore, pagination.page, loading, isFetchingMore, fetchTools, loadAll]);
+  }, [pagination.hasMore, pagination.page, loading, isFetchingMore, fetchTools]);
 
-  // 根据是否有自定义标题决定显示什么标题
-  // @ts-ignore - 暂时忽略类型错误
   const displayTitle = searchQuery 
     ? 'Search Results' 
-    // @ts-ignore - 暂时忽略类型错误
-    : (customTitle || t('just_launched'));
+    : (customTitle || 'Just launched');
 
-  // 为了 IntersectionObserver，我们需要修改 AIToolGrid 组件的用法
-  // 直接渲染工具卡片，并添加 ref 到最后一个元素
+  // 渲染工具卡片并添加 ref 到最后一个元素
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">{displayTitle}</h2>

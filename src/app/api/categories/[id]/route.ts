@@ -4,11 +4,12 @@ import { NextResponse } from 'next/server';
 // 获取单个类别
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
+    const { id } = await params;
+    const idNum = parseInt(id);
+    if (Number.isNaN(idNum)) {
       return NextResponse.json(
         { error: 'Invalid category ID' },
         { status: 400 }
@@ -18,7 +19,7 @@ export async function GET(
     const { data, error } = await supabase
       .from('categories')
       .select('*')
-      .eq('id', id)
+      .eq('id', idNum)
       .single();
     
     if (error) {
@@ -44,11 +45,12 @@ export async function GET(
 // 更新类别
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
+    const { id } = await params;
+    const idNum = parseInt(id);
+    if (Number.isNaN(idNum)) {
       return NextResponse.json(
         { error: 'Invalid category ID' },
         { status: 400 }
@@ -73,7 +75,7 @@ export async function PUT(
         name: body.name.trim(),
         description: body.description || null
       })
-      .eq('id', id)
+      .eq('id', idNum)
       .select()
       .single();
     
@@ -95,11 +97,12 @@ export async function PUT(
 // 删除类别
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
+    const { id } = await params;
+    const idNum = parseInt(id);
+    if (Number.isNaN(idNum)) {
       return NextResponse.json(
         { error: 'Invalid category ID' },
         { status: 400 }
@@ -110,7 +113,7 @@ export async function DELETE(
     const { error } = await adminSupabase
       .from('categories')
       .delete()
-      .eq('id', id);
+      .eq('id', idNum);
     
     if (error) {
       console.error('Error deleting category:', error);

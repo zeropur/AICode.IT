@@ -46,7 +46,6 @@ const sampleTools: Tool[] = [
 const ToolCard: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -73,10 +72,6 @@ const ToolCard: React.FC = () => {
 
   if (loading) {
     return <div className="text-center py-8">Loading tools...</div>;
-  }
-
-  if (error && tools.length === 0) {
-    return <div className="text-center py-8 text-red-500">{error}</div>;
   }
 
   if (tools.length === 0) {

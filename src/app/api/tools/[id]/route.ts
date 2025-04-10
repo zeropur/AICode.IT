@@ -4,13 +4,14 @@ import { supabase, adminSupabase } from '@/libs/Supabase';
 // 获取单个工具
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { data, error } = await supabase
       .from('tools')
       .select('*, categories(name)')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) {
@@ -47,9 +48,10 @@ export async function GET(
 // 更新工具（仅管理员）
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // 这里可以添加认证检查
     // if (!isAuthenticated(request)) {
     //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -68,7 +70,7 @@ export async function PUT(
     const { data, error } = await adminSupabase
       .from('tools')
       .update(body)
-      .eq('id', params.id)
+      .eq('id', id)
       .select('*, categories(name)')
       .single();
 
@@ -100,9 +102,10 @@ export async function PUT(
 // 删除工具（仅管理员）
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // 这里可以添加认证检查
     // if (!isAuthenticated(request)) {
     //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -111,7 +114,7 @@ export async function DELETE(
     const { error } = await adminSupabase
       .from('tools')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (error) {
       console.error('Error deleting tool:', error);
